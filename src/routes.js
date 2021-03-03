@@ -3,6 +3,7 @@ const { default: alunoController } = require("./controllers/alunoController");
 const AlunoController = require("./controllers/alunoController");
 const CoordenadorController = require("./controllers/coordenadorController");
 const FuncionarioController = require("./controllers/funcionarioController");
+const ProfessorController = require('./controllers/professorController')
 
 const routes = express.Router();
 
@@ -20,5 +21,10 @@ routes.post("/funcionario", FuncionarioController.create);
 routes.get("/funcionario", FuncionarioController.read);
 routes.put("/funcionario", FuncionarioController.update);
 routes.delete("/funcionario", FuncionarioController.delete);
+
+routes.post("/professor", ProfessorController.create);
+routes.get("/professor", ProfessorController.read);
+routes.put("/professor", ProfessorController.update);
+routes.delete("/professor", ProfessorController.delete);
 
 module.exports = routes;
