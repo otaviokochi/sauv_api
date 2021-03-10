@@ -1,12 +1,23 @@
-const knex = require('knex')({
-    client: 'mysql',
-    connection: {
-        port: 3306,
-        user: "root",
-        password: "password",
-        database: "sauv",
-        insecureAuth : true
-    }
-});
+module.exports = {
 
-module.exports = knex;
+    development: {
+      client: 'mysql',
+      connection: {
+        host: "localhost",
+        user: "root", 
+        password: "otaviokochi",
+        database: "sauv"
+      },
+      migrations: {
+        tableName: 'knex_migrations',
+        directory: `${__dirname}/src/database/migrations`
+      },
+      seeds: {
+        directory: `${__dirname}/src/database/seeds`
+      }
+      
+    },
+   
+  
+  };
+  
