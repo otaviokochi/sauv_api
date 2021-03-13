@@ -1,5 +1,5 @@
 
-exports.up = knex => knex.schema.createTable('professores', table => {
+exports.up = knex => knex.schema.createTableIfNotExists('professores', table => {
   table.increments('id').primary();
   table.string('nome').notNullable();
   table.string('cpf').notNullable();
@@ -12,7 +12,6 @@ exports.up = knex => knex.schema.createTable('professores', table => {
   table.string('endereco').notNullable();
   table.string('complemento').notNullable();
   table.string('disciplinas').notNullable();
-  table.integer('disciplinas_id').references('disciplinas.id')
 });
 
 exports.down = knex => knex.schema.dropTable('professores');

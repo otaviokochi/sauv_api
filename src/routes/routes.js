@@ -3,7 +3,7 @@ const { default: alunoController } = require("../controllers/alunoController");
 const AlunoController = require("../controllers/alunoController");
 const CoordenadorController = require("../controllers/coordenadorController");
 const FuncionarioController = require("../controllers/funcionarioController");
-const ProfessorController = require('../controllers/professorController')
+const ProfessorController = require('../controllers/professor.controller')
 const disciplina = require('../controllers/disciplina.controller');
 const serie = require('../controllers/serie.controller');
 const turma = require('../controllers/turma.controller');
@@ -25,10 +25,10 @@ routes.get("/funcionario", FuncionarioController.read);
 routes.put("/funcionario", FuncionarioController.update);
 routes.delete("/funcionario", FuncionarioController.delete);
 
-routes.post("/professor", ProfessorController.create);
-routes.get("/professor", ProfessorController.read);
-routes.put("/professor", ProfessorController.update);
-routes.delete("/professor", ProfessorController.delete);
+routes.post("/professores", ProfessorController.create);
+routes.get("/professores", ProfessorController.read);
+routes.patch("/professores/:id", ProfessorController.update);
+routes.delete("/professores/:id", ProfessorController.delete);
 
 routes.post("/disciplinas", disciplina.criar);
 routes.get("/disciplinas", disciplina.buscaDisciplinas);
