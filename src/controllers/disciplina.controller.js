@@ -69,7 +69,7 @@ module.exports = {
   },
 
   deletar (req, res) {
-    Disciplina.remove(req.params.id, (error, resultado) => {
+    Disciplina.remove(req.params.id, (error, dados) => {
       if(error) {
         console.log(error);
         res.status(500).send({ message: error });
@@ -78,7 +78,7 @@ module.exports = {
         if(dados > 0) {
           res.send({ message: `Disciplina de id ${req.params.id} deletada com sucesso!`});
         } else {
-          res.send({ message: `Disciplina de id ${req.params.id} não encontrada!`});
+          res.status(400).send({ message: `Disciplina de id ${req.params.id} não encontrada!`});
         }
       }
     })

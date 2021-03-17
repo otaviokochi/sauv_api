@@ -40,7 +40,7 @@ module.exports = {
   },
 
   buscaSerie (req, res) {
-    Serie.getById(req.params.anoLetivo, (error, dados) => {
+    Serie.getById(req.params.id, (error, dados) => {
       if(error) {
         console.log(error);
         res.status(500).send({ message: error });
@@ -52,30 +52,31 @@ module.exports = {
 
   atualizar (req, res) {
     const serieAtualizada = new Serie(req.body);
-    Serie.update(req.params.anoLetivo, serieAtualizada, (error, dados) => {
+    Serie.update(req.params.id, serieAtualizada, (error, dados) => {
       if(error) {
         console.log(error);
         res.status(500).send({ message: error });
       } else {
         if(dados > 0) {
-          res.send({ message: `Serie de ano letivo ${req.params.anoLetivo} atualizada com sucesso!`});
+          res.send({ message: `Serie de ano letivo ${req.params.id} atualizada com sucesso!`});
         } else {
-          res.send({ message: `Serie de ano letivo ${req.params.anoLetivo} não encontrada!`});
+          res.send({ message: `Serie de ano letivo ${req.params.id} não encontrada!`});
         }
       }
     })
   },
 
   deletar (req, res) {
-    Serie.remove(req.params.anoLetivo, (error, dados) => {
+    console.log(req.params.id)
+    Serie.remove(req.params.id, (error, dados) => {
       if(error) {
         console.log(error);
         res.status(500).send({ message: error });
       } else {
         if(dados > 0) {
-          res.send({ message: `Serie de ano letivo ${req.params.anoLetivo} excluída com sucesso!`});
+          res.send({ message: `Serie de ano letivo ${req.params.id} excluída com sucesso!`});
         } else {
-          res.send({ message: `Serie de ano letivo ${req.params.anoLetivo} não encontrada!`});
+          res.send({ message: `Serie de ano letivo ${req.params.id} não encontrada!`});
         }
       }
     })
