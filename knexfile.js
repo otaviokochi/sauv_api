@@ -1,12 +1,11 @@
 module.exports = {
-
   development: {
     client: 'mysql',
     connection: {
-      host: "",
-      user: "",
-      password: "",
-      database: ""
+      host: "localhost",
+      user: "root", 
+      password: "otaviokochi",
+      database: "sauv"
     },
     migrations: {
       tableName: 'knex_migrations',
@@ -15,8 +14,5 @@ module.exports = {
     seeds: {
       directory: `${__dirname}/src/database/seeds`
     }
-
   },
-
-
 };

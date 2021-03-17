@@ -27,16 +27,16 @@ Serie.getByAnoLetivo = (anoLetivo, resultado) => {
     .catch(err => resultado(err, null));
 }
 
-Serie.getById = (anoLetivo, resultado) => {
+Serie.getById = (id, resultado) => {
   knex('series')
-    .where('anoLetivo', anoLetivo)
+    .where('id', id)
     .then(response => resultado(null, response))
     .catch(err => resultado(err, null));
 }
 
-Serie.update = (anoLetivo, serie, resultado) => {
+Serie.update = (id, serie, resultado) => {
   knex('series')
-    .where('anoLetivo', anoLetivo)
+    .where('id', id)
     .update({
       ...serie
     })
@@ -44,9 +44,9 @@ Serie.update = (anoLetivo, serie, resultado) => {
     .catch(err => resultado(err, null));
 }
 
-Serie.remove = (anoLetivo, resultado) => {
+Serie.remove = (id, resultado) => {
   knex('series')
-    .where('anoLetivo', anoLetivo)
+    .where('id', id)
     .del()
     .then(response => resultado(null, response))
     .catch(err => resultado(err, null));

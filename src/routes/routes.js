@@ -39,8 +39,8 @@ routes.delete("/disciplinas/:id", disciplina.deletar);
 routes.post("/series", serie.criar);
 routes.get("/series", serie.buscaSeries);
 routes.get("/series/:anoLetivo", serie.buscaSerie);
-routes.put("/series/:anoLetivo", serie.atualizar);
-routes.delete("/series/:anoLetivo", serie.deletar);
+routes.put("/series/:id", serie.atualizar);
+routes.delete("/series/:id", serie.deletar);
 
 routes.post("/turmas", turma.criar);
 routes.get("/turmas", turma.buscaTurmas);
