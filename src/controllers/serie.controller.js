@@ -6,8 +6,13 @@ module.exports = {
     const serie = new Serie(req.body);
     Serie.criar(serie, (error, dados) => {
       if(error) {
-        console.log(error);
-        res.status(500).send({ message: error });
+        if (error.code === 'ER_DUP_ENTRY') {
+          console.log(error);
+          res.status(500).send({ message: `Série duplicada!` });
+        } else {
+          console.log(error.message);
+          res.status(500).send({ message: error.message });
+        }
       } else {
         res.send(dados);
       }
@@ -25,11 +30,13 @@ module.exports = {
         }
       })
     } else {
-      Serie.getAll((error, dados) => {
+      const pages = req.query.pages || 1;
+      Serie.getAll(pages,(error, dados) => {
         if(error) {
           console.log(error);
           res.status.send({ message: error });
         } else {
+          console.log(dados);
           dados.forEach(serie => {
             serie.disciplinas = JSON.parse(serie.disciplinas)
           })
