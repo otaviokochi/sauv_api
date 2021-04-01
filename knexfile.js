@@ -1,13 +1,11 @@
 module.exports = {
 
   development: {
-    client: 'mysql',
+    client: 'sqlite3',
     connection: {
-      host: "",
-      user: "",
-      password: "",
-      database: ""
+      filename: './src/database/dev.sqlite3'
     },
+    useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
       directory: `${__dirname}/src/database/migrations`
@@ -17,6 +15,5 @@ module.exports = {
     }
 
   },
-
 
 };

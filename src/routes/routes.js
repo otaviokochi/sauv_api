@@ -1,5 +1,5 @@
 const express = require("express");
-const { default: alunoController } = require("../controllers/alunoController");
+
 const AlunoController = require("../controllers/alunoController");
 const CoordenadorController = require("../controllers/coordenadorController");
 const FuncionarioController = require("../controllers/funcionarioController");
