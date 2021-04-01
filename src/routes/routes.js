@@ -7,6 +7,7 @@ const ProfessorController = require('../controllers/professor.controller')
 const disciplina = require('../controllers/disciplina.controller');
 const serie = require('../controllers/serie.controller');
 const turma = require('../controllers/turma.controller');
+const Aluno = require("../model/aluno");
 
 const routes = express.Router();
 
@@ -47,5 +48,7 @@ routes.get("/turmas", turma.buscaTurmas);
 routes.get("/turmas/:id", turma.buscaTurma);
 routes.put("/turmas/:id", turma.atualizar);
 routes.delete("/turmas/:id", turma.deletar);
+
+routes.put('/trancar/alunos', AlunoController.trancar);
 
 module.exports = routes;

@@ -15,6 +15,7 @@ exports.up = (knex) =>
     table.string("bairro").notNullable();
     table.string("endereco").notNullable();
     table.string("complemento").notNullable();
+    table.string('estadoMatricula');
 
     table.primary("cpf");
 

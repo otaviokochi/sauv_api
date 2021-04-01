@@ -1,3 +1,4 @@
+const { response } = require("express");
 const knex = require("../database/db");
 
 class Aluno {
@@ -17,6 +18,7 @@ class Aluno {
     this.bairro = aluno.bairro;
     this.endereco = aluno.endereco;
     this.complemento = aluno.complemento;
+    this.estadoMatricula = "matriculado";
   }
   static read(resultado) {
     knex("aluno")
@@ -52,6 +54,14 @@ class Aluno {
     knex("aluno")
       .where("cpf", cpf)
       .del()
+      .then((response) => resultado(null, response))
+      .catch((err) => resultado(err, null));
+  }
+  static trancar(cpf, aluno, resultado) {
+    aluno.estadoMatricula = "trancada";
+    knex("aluno")
+      .where("cpf", cpf)
+      .update(aluno)
       .then((response) => resultado(null, response))
       .catch((err) => resultado(err, null));
   }

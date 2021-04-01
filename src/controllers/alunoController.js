@@ -57,4 +57,22 @@ module.exports = {
             }
         })
     },
+
+    trancar(req, res) {
+        
+        Aluno.getByName(req.body.cpf, (error, dados) => {
+            if (error) {
+                res.status(500).send({ message: error + '' });
+            }
+            aluno = new Aluno(dados);
+        })
+        
+        Aluno.trancar(req.body.cpf, aluno, error => {
+            if (error) {
+                res.status(500).send ({ message: error + '' });
+            } else {
+                res.send({ message: `Matrícula do aluno de CPF ${req.body.cpf} trancada!`});
+            }
+        })
+    }
 }
