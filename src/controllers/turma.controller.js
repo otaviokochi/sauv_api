@@ -5,8 +5,17 @@ module.exports = {
     const turma = new Turma(req.body);
     Turma.criar(turma, (error, dados) => {
       if(error) {
-        console.log(error);
-        res.status(500).send({ message: error });
+        if(error.code == 'ER_DUP_ENTRY') {
+          console.log(error);
+          res.status(500).send({ message: "Turma já criada" });
+        } else if (error.code == "ER_NO_REFERENCED_ROW_2") {
+          console.log(error);
+          res.status(500).send({ message: "Série não encontrada!" });
+        }
+        else {
+          console.log(error);
+          res.status(500).send({ message: error });
+        }
       } else {
         res.send(dados);
       }
