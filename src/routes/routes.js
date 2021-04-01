@@ -1,4 +1,3 @@
-const express = require("express");
 const { default: alunoController } = require("../controllers/alunoController");
 const AlunoController = require("../controllers/alunoController");
 const CoordenadorController = require("../controllers/coordenadorController");
@@ -7,45 +6,80 @@ const ProfessorController = require('../controllers/professor.controller')
 const disciplina = require('../controllers/disciplina.controller');
 const serie = require('../controllers/serie.controller');
 const turma = require('../controllers/turma.controller');
+const { authenticate } = require('../config/passport.config');
+const { signin } = require('../controllers/auth.controller');
 
-const routes = express.Router();
+module.exports = app => {  
+  app.route("/signin")
+    .post(signin)
+  
+  app.route("/aluno")
+  .all(authenticate())
+  .post(AlunoController.create)
+  .get(AlunoController.read)
+  .put(AlunoController.update)
+  .delete(AlunoController.delete)
+  
+  app.route("/coordenador")
+  .all(authenticate())
+  .post(CoordenadorController.create)
+  .get(CoordenadorController.read)
+  .put(CoordenadorController.update)
+  .delete(CoordenadorController.delete)
+  
+  app.route("/funcionario")
+    .all(authenticate())
+    .post(FuncionarioController.create)
+    .get(FuncionarioController.read)
+    .put(FuncionarioController.update)
+    .delete(FuncionarioController.delete)
 
-routes.post("/aluno", AlunoController.create);
-routes.get("/aluno", AlunoController.read);
-routes.put("/aluno", AlunoController.update);
-routes.delete("/aluno", AlunoController.delete);
 
-routes.post("/coordenador", CoordenadorController.create);
-routes.get("/coordenador", CoordenadorController.read);
-routes.put("/coordenador", CoordenadorController.update);
-routes.delete("/coordenador", CoordenadorController.delete);
+  app.route("/professores")
+    .all(authenticate())
+    .post(ProfessorController.create)
+    .get(ProfessorController.read)
 
-routes.post("/funcionario", FuncionarioController.create);
-routes.get("/funcionario", FuncionarioController.read);
-routes.put("/funcionario", FuncionarioController.update);
-routes.delete("/funcionario", FuncionarioController.delete);
+  app.route("/professores/:id")
+    .all(authenticate())
+    .patch(ProfessorController.update)
+    .delete(ProfessorController.delete)
 
-routes.post("/professores", ProfessorController.create);
-routes.get("/professores", ProfessorController.read);
-routes.patch("/professores/:id", ProfessorController.update);
-routes.delete("/professores/:id", ProfessorController.delete);
+  app.route("/disciplinas")
+    .all(authenticate())
+    .post(disciplina.criar)
+    .get(disciplina.buscaDisciplinas)
+    
+  app.route("/disciplinas/:id")
+    .all(authenticate())
+    .get(disciplina.buscaDisciplina)
+    .put(disciplina.atualizar)
+    .delete(disciplina.deletar)
 
-routes.post("/disciplinas", disciplina.criar);
-routes.get("/disciplinas", disciplina.buscaDisciplinas);
-routes.get("/disciplinas/:id", disciplina.buscaDisciplina);
-routes.put("/disciplinas/:id", disciplina.atualizar);
-routes.delete("/disciplinas/:id", disciplina.deletar);
 
-routes.post("/series", serie.criar);
-routes.get("/series", serie.buscaSeries);
-routes.get("/series/:anoLetivo", serie.buscaSerie);
-routes.put("/series/:id", serie.atualizar);
-routes.delete("/series/:id", serie.deletar);
+  app.route("/series")
+    .all(authenticate())
+    .post(serie.criar)
+    .get(serie.buscaSeries)
 
-routes.post("/turmas", turma.criar);
-routes.get("/turmas", turma.buscaTurmas);
-routes.get("/turmas/:id", turma.buscaTurma);
-routes.put("/turmas/:id", turma.atualizar);
-routes.delete("/turmas/:id", turma.deletar);
+  app.route("/series/:id")
+    .all(authenticate())
+    .put(serie.atualizar)
+    .delete(serie.deletar)
+  
+  app.route("/series/:anoLetivo")
+    .all(authenticate())
+    .get(serie.buscaSerie);
+    
+    app.route("/turmas")
+    .all(authenticate())
+    .post(turma.criar)
+    .get(turma.buscaTurmas)
 
-module.exports = routes;
+  app.route("/turmas/:id")
+    .all(authenticate())
+    .get(turma.buscaTurma)
+    .put(turma.atualizar)
+    .delete(turma.deletar)
+
+}

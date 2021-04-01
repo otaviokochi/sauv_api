@@ -21,7 +21,7 @@ module.exports = {
 
   buscaSeries (req, res) {
     if(req.params.anoLetivo) {
-      Serie.buscaPorAnoLetivo(req.params.anoLetivo, (error, dados) => {
+      Serie.getByAnoLetivo(req.params.anoLetivo, (error, dados) => {
         if(error) {
           console.log(error);
           res.status(500).send({ message: error });

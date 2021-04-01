@@ -23,7 +23,7 @@ const strategy = new Strategy(params, (payload, done) => {
 
 passport.use(strategy);
 
-const authenticate = () => passport.authenticate('jwt', { session: true });
+const authenticate = () => passport.authenticate('jwt', { session: false });
 
 module.exports = {
   authenticate
