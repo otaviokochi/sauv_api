@@ -1,5 +1,5 @@
 const knex = require('../database/db');
-const {nomeTurma} = require('../helperTurma');
+const {nomeTurma} = require('../nomeTurma');
 
 const Turma = function(turma) {
   this.serie = turma.serie;
