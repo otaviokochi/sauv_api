@@ -15,7 +15,7 @@ const signin = async (req, res) => {
 
   if (!userDB) return res.status(401).send("Email/senha incorretos");
 
-  const passwordMatches = await bcrypt.compare(userReq.password, userDB.password).catch(() => false);
+  const passwordMatches = await bcrypt.compare(userReq.password, userDB.senha).catch(() => false);
   
   if (!passwordMatches) return res.status(401).send("Email/senha incorretos");
 
@@ -23,7 +23,7 @@ const signin = async (req, res) => {
   const payload = {
     id: userDB.id,
     username: userDB.username,
-    type: userDB.type,
+    tipo: userDB.tipo,
     iat: now,
     exp: now + (60 * 60 * 24 * 3)
   }

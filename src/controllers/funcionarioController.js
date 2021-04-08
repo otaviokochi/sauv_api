@@ -1,85 +1,60 @@
-const connection = require("../../knexfile");
+const Funcionario = require('../model/funcionario');
 
 module.exports = {
-    async create(request, response) {
-        const {
-            primNome,
-            sobrenome,
-            genero,
-            cpf,
-            rg,
-            email,
-            telefone,
-            logradouro,
-            pais,
-            estado,
-            cidade
-        } = request.body;
+    create(req, res) {
+        const funcionario = new Funcionario(req.body);
 
-        await connection("funcionario").insert({
-            primNome,
-            sobrenome,
-            genero,
-            cpf,
-            rg,
-            email,
-            telefone,
-            logradouro,
-            pais,
-            estado,
-            cidade
-        });
-
-        return response.sendStatus(200);
-    },
-
-    async read(request, response) {
-        const [count] = await connection("funcionario").count();
-
-        const funcionarios = await connection("funcionario").select("*");
-
-        response.header("X-Total-Count", count["count(*)"]);
-
-        return response.json(funcionarios);
-    },
-
-    async update(request, response) {
-        const {
-            primNome,
-            sobrenome,
-            genero,
-            cpf,
-            rg,
-            email,
-            telefone,
-            logradouro,
-            pais,
-            estado,
-            cidade
-        } = request.body;
-
-        await connection("funcionario").update({
-            primNome,
-            sobrenome,
-            genero,
-            cpf,
-            rg,
-            email,
-            telefone,
-            logradouro,
-            pais,
-            estado,
-            cidade
+        Funcionario.create(funcionario, (err, body) => {
+            if (err) {
+                res.status(500).send({ message: err.message});
+            } else {
+                res.send(body);
+            }
         })
-
-        return response.sendStatus(200);
     },
 
-    async delete(request, response) {
-        const { rg } = request.body;
+    read(req, res) {
+        if (req.query.nome) {
+            Funcionario.getByName(req.query.nome, (error, dados) => {
+                if (error) {
+                    res.status(500).send({ message: error });
+                } else {
+                    res.send(dados);
+                }
+            })
+        } else {
+            Funcionario.read((error, dados) => {
+                if (error) {
+                    res.status(500).send({ message: error });
+                } else {
+                    res.send(dados);
+                }
+            })
+        }
+    },
 
-        await connection("funcionario").delete(rg);
+    update(req, res) {
+        const funcionario = new Funcionario(req.body);
+        Funcionario.update(req.body.cpf, funcionario, (error, dados) => {
+            if (error) {
+                res.status(500).send({ message: error + '' });
+            } else {
+                if (dados > 0) {
+                    res.send({ cpf: dados, ...req.body });
+                } else {
+                    res.send({ message: `Funcionario de CPF ${req.params.cpf} não foi encontrado!` });
+                }
+            }
+        })
+    },
 
-        return response.sendStatus(200);
+    delete(req, res) {
+        Funcionario.remove(req.body.cpf, (error, resultado) => {
+            if (error) {
+                res.status(500).send({ message: error + '' });
+            } else {
+                res.send({ message: `Funcionario de CPF ${req.body.cpf} deletado com sucesso!` });
+            }
+        })
     },
 };

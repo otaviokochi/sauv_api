@@ -1,101 +1,78 @@
-const connection = require("../../knexfile");
+const Aluno = require('../model/aluno');
 
 module.exports = {
-    async create(request, response) {
-        const {
-            nome,
-            cpf,
-            rg,
-            email,
-            sexo,
-            serie,
-            turma,
-            nomeResponsavel,
-            cpfResponsavel,
-            telefoneResponsavel,
-            emailResponsavel,
-            cep,
-            bairro,
-            endereco,
-            complemento
-        } = request.body;
-        
-        await connection("aluno").insert({
-            nome,
-            cpf,
-            rg,
-            email,
-            sexo,
-            serie,
-            turma,
-            nomeResponsavel,
-            cpfResponsavel,
-            telefoneResponsavel,
-            emailResponsavel,
-            cep,
-            bairro,
-            endereco,
-            complemento
-        });
-        
-        return response.sendStatus(200);
-    },
+    create(req, res) {
+        const aluno = new Aluno(req.body);
 
-    async read(request, response) {
-        const [count] = await connection("aluno").count();
-
-        const alunos = await connection("aluno").select("*");
-    
-        response.header("X-Total-Count", count["count(*)"]);
-
-        return response.json(alunos);
-    },
-
-    async update(request, response) {
-        const {
-            nome,
-            cpf,
-            rg,
-            email,
-            sexo,
-            serie,
-            turma,
-            nomeResponsavel,
-            cpfResponsavel,
-            telefoneResponsavel,
-            emailResponsavel,
-            cep,
-            bairro,
-            endereco,
-            complemento
-        } = request.body;
-
-        await connection("aluno").update({
-            nome,
-            cpf,
-            rg,
-            email,
-            sexo,
-            serie,
-            turma,
-            nomeResponsavel,
-            cpfResponsavel,
-            telefoneResponsavel,
-            emailResponsavel,
-            cep,
-            bairro,
-            endereco,
-            complemento
+        Aluno.create(aluno, (err, body) => {
+            if (err) {
+                res.status(500).send({ message: err.message});
+            } else {
+                res.send(body);
+            }
         })
-
-        return response.sendStatus(200);
+    },
+    
+    read(req, res) {
+        if (req.query.nome) {
+            Aluno.getByName(req.query.nome, (error, dados) => {
+                if (error) {
+                    res.status(500).send({ message: error });
+                } else {
+                    res.send(dados);
+                }
+            })
+        } else {
+            Aluno.read((error, dados) => {
+                if (error) {
+                    res.status(500).send({ message: error });
+                } else {
+                    res.send(dados);
+                }
+            })
+        }
     },
 
-    async delete(request, response) {
-        const { rg } = request.body;
-
-        await connection("aluno").delete(rg);
-
-        return response.sendStatus(200);
+    update(req, res) {
+        const aluno = new Aluno(req.body);
+        Aluno.update(req.body.cpf, aluno, (error, dados) => {
+            if (error) {
+                res.status(500).send({ message: error + '' });
+            } else {
+                if (dados > 0) {
+                    res.send({ cpf: dados, ...req.body });
+                } else {
+                    res.send({ message: `Aluno de CPF ${req.params.cpf} não foi encontrado!` });
+                }
+            }
+        })
     },
-};
+
+    delete(req, res) {
+        Aluno.remove(req.body.cpf, (error, _) => {
+            if (error) {
+                res.status(500).send({ message: error + '' });
+            } else {
+                res.send({ message: `Aluno de CPF ${req.body.cpf} deletado com sucesso!` });
+            }
+        })
+    },
+
+    trancar(req, res) {
+        
+        Aluno.getByName(req.body.cpf, (error, dados) => {
+            if (error) {
+                res.status(500).send({ message: error + '' });
+            }
+            aluno = new Aluno(dados);
+        })
+        
+        Aluno.trancar(req.body.cpf, aluno, error => {
+            if (error) {
+                res.status(500).send ({ message: error + '' });
+            } else {
+                res.send({ message: `Matrícula do aluno de CPF ${req.body.cpf} trancada!`});
+            }
+        })
+    }
+}
