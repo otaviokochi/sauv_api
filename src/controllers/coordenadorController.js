@@ -1,85 +1,60 @@
-const connection = require("../../knexfile");
+const Coordenador = require('../model/coordenador');
 
 module.exports = {
-    async create(request, response) {
-        const {
-            primNome,
-            sobrenome,
-            genero,
-            cpf,
-            rg,
-            email,
-            telefone,
-            logradouro,
-            pais,
-            estado,
-            cidade
-        } = request.body;
+    create(req, res) {
+        const coordenador = new Coordenador(req.body);
 
-        await connection("coordenador").insert({
-            primNome,
-            sobrenome,
-            genero,
-            cpf,
-            rg,
-            email,
-            telefone,
-            logradouro,
-            pais,
-            estado,
-            cidade
-        });
-
-        return response.sendStatus(200);
-    },
-
-    async read(request, response) {
-        const [count] = await connection("coordenador").count();
-
-        const coordenadores = await connection("coordenador").select("*");
-
-        response.header("X-Total-Count", count["count(*)"]);
-
-        return response.json(coordenadores);
-    },
-
-    async update(request, response) {
-        const {
-            primNome,
-            sobrenome,
-            genero,
-            cpf,
-            rg,
-            email,
-            telefone,
-            logradouro,
-            pais,
-            estado,
-            cidade
-        } = request.body;
-
-        await connection("coordenador").update({
-            primNome,
-            sobrenome,
-            genero,
-            cpf,
-            rg,
-            email,
-            telefone,
-            logradouro,
-            pais,
-            estado,
-            cidade
+        Coordenador.create(coordenador, (err, body) => {
+            if (err) {
+                res.status(500).send({ message: err.message});
+            } else {
+                res.send(body);
+            }
         })
-
-        return response.sendStatus(200);
     },
 
-    async delete(request, response) {
-        const { rg } = request.body;
+    read(req, res) {
+        if (req.query.nome) {
+            Coordenador.getByName(req.query.nome, (error, dados) => {
+                if (error) {
+                    res.status(500).send({ message: error });
+                } else {
+                    res.send(dados);
+                }
+            })
+        } else {
+            Coordenador.read((error, dados) => {
+                if (error) {
+                    res.status(500).send({ message: error });
+                } else {
+                    res.send(dados);
+                }
+            })
+        }
+    },
 
-        await connection("coordenador").delete(rg);
+    update(req, res) {
+        const coordenador = new Coordenador(req.body);
+        Coordenador.update(req.body.cpf, coordenador, (error, dados) => {
+            if (error) {
+                res.status(500).send({ message: error + '' });
+            } else {
+                if (dados > 0) {
+                    res.send({ cpf: dados, ...req.body });
+                } else {
+                    res.send({ message: `Coordenador de CPF ${req.params.cpf} não foi encontrado!` });
+                }
+            }
+        })
+    },
 
-        return response.sendStatus(200);
+    delete(req, res) {
+        Coordenador.remove(req.body.cpf, (error, _) => {
+            if (error) {
+                res.status(500).send({ message: error + '' });
+            } else {
+                res.send({ message: `Coordenador de CPF ${req.body.cpf} deletado com sucesso!` });
+            }
+        })
     },
 };

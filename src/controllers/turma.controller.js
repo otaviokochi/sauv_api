@@ -45,7 +45,7 @@ module.exports = {
   },
 
   buscaTurma (req, res) {
-    Turma.getById(req.params.id, (error, dados) => {
+    Turma.getBySerie(req.params.serie, (error, dados) => {
       if(error) {
         console.log(error);
         res.status(500).send({ message: error });
