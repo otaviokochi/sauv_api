@@ -4,7 +4,7 @@ module.exports = {
     connection: {
       host: "localhost",
       user: "root",
-      password: "otaviokochi",
+      password: "27102017",
       database: "sauv"
     },
     migrations: {
