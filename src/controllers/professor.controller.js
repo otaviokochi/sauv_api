@@ -1,13 +1,22 @@
 const Professor = require('../model/professor');
+const Disciplinas = require('../model/disciplina')
 
 module.exports = {
   create(req, res) {
+
+    if (req.body.disciplinas) {
+      const disciplinasId = req.body.disciplinas
+      delete req.body.disciplinas
+    }
+
     const professor = new Professor(req.body);
 
     Professor.create(professor, (err, body) => {
       if (err) {
         res.status(500).send({ message: err.message });
       } else {
+        const { id } = body
+
         res.send(body);
       }
     })
