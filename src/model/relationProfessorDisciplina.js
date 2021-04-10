@@ -15,7 +15,9 @@ RelationProfessorDisciplina.read = resultado => {
 RelationProfessorDisciplina.findById = (id, resultado) => {
   knex('relation-professor-disciplina')
     .where('id', id)
-    .then(response => resultado(null, response))
+    .then(response => {
+      resultado(null, response)
+    })
     .catch(err => resultado(err, null));
 }
 

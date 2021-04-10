@@ -1,23 +1,37 @@
 const Professor = require('../model/professor');
-const Disciplinas = require('../model/disciplina')
+const RelationProfessorDisciplina = require('../model/relationProfessorDisciplina')
+const Disciplina = require('../model/disciplina')
 
 module.exports = {
   create(req, res) {
 
+    let disciplinasId = []
     if (req.body.disciplinas) {
-      const disciplinasId = req.body.disciplinas
+      disciplinasId = req.body.disciplinas
       delete req.body.disciplinas
     }
 
     const professor = new Professor(req.body);
 
-    Professor.create(professor, (err, body) => {
+    Professor.create(professor,  async (err, body) => {
       if (err) {
         res.status(500).send({ message: err.message });
       } else {
         const { id } = body
-
-        res.send(body);
+        let disciplinas = disciplinasId.map(async disciplinaId => {
+          const req = {
+            professor_id: id,
+            disciplina_id: disciplinaId
+          }
+          RelationProfessorDisciplina.create(req, err => err)
+          const response = await Disciplina.findDisciplinaById(disciplinaId)
+          return Object.values(JSON.parse(JSON.stringify(response)))
+        })
+        
+        res.send({
+          ...body,
+          disciplinas: await Promise.all(disciplinas)
+        });
       }
     })
   },

@@ -11,7 +11,6 @@ const Professor = function (professor) {
   this.bairro = professor.bairro;
   this.endereco = professor.endereco;
   this.complemento = professor.complemento;
-  this.disciplinas = professor.disciplinas
 }
 
 Professor.read = resultado => {
