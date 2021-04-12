@@ -31,9 +31,12 @@ Disciplina.getByName = (nomeDisciplina, resultado) => {
 Disciplina.findById = (id, resultado) => {
   knex('disciplinas')
     .where('id', id)
-    .then(response => resultado(null, response))
-    .catch(err => resultado(err, null));
+    .then(response => resultado && resultado(null, response))
+    .catch(err => resultado && resultado(err, null));
 }
+
+Disciplina.findDisciplinaById = async id => 
+  knex('disciplinas').where('id', id)
 
 Disciplina.update = (id, disciplina, resultado) => {
   knex('disciplinas')

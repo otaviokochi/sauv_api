@@ -1,6 +1,6 @@
 
 exports.up = knex => knex.schema.createTable('disciplinas', table => {
-  table.increments('id');
+  table.increments('id').primary();
   table.string('nomeDisciplina').notNullable().unique();
   table.integer('cargaHoraria').notNullable();
   table.string('professor');

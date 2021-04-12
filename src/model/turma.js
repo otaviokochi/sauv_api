@@ -1,9 +1,9 @@
 const knex = require('../database/db');
-const nomeTurma = require('../nomeTurma');
+const {nomeTurma} = require('../nomeTurma');
 
 const Turma = function(turma) {
   this.serie = turma.serie;
-  this.turma = turma.turma;
+  this.turma = turma.turma.toUpperCase();
   this.nome = nomeTurma(turma.serie, turma.turma);
 }
 
@@ -29,9 +29,9 @@ Turma.getByName = (nomeTurma, resultado) => {
     .catch(err => resultado(err, null));
 };
 
-Turma.getById = (id, resultado) => {
+Turma.getBySerie = (serie, resultado) => {
   knex('turmas')
-    .where('id', id)
+    .where('serie', serie)
     .then(response => resultado(null, response))
     .catch(err => resultado(err, null));
 }
