@@ -5,27 +5,15 @@ const RelationProfessorDisciplina = function (relation) {
   this.disciplinaId = relation.disciplinaId;
 }
 
-RelationProfessorDisciplina.read = resultado => {
+RelationProfessorDisciplina.read = async () => 
   knex('relation-professor-disciplina')
-    .then(response => resultado(null, response))
-    .catch(err => resultado(err, null));
-}
 
 
-RelationProfessorDisciplina.findById = (id, resultado) => {
-  knex('relation-professor-disciplina')
-    .where('id', id)
-    .then(response => {
-      resultado(null, response)
-    })
-    .catch(err => resultado(err, null));
-}
+RelationProfessorDisciplina.findById = async id => 
+  knex('relation-professor-disciplina').where('professor_id', id)
 
-RelationProfessorDisciplina.create = (relation, resultado) => {
+RelationProfessorDisciplina.create = async relation =>
   knex('relation-professor-disciplina').insert(relation)
-    .then(response => resultado(null, { id: response[0], ...relation }))
-    .catch(err => resultado(err, null))
-}
 
 RelationProfessorDisciplina.update = (id, relation, resultado) => {
   knex('relation-professor-disciplina')
@@ -35,12 +23,9 @@ RelationProfessorDisciplina.update = (id, relation, resultado) => {
     .catch(err => resultado(err, null));
 }
 
-RelationProfessorDisciplina.remove = (id, resultado) => {
+RelationProfessorDisciplina.remove = async id =>
   knex('relation-professor-disciplina')
-    .where('id', id)
+    .where('professor_id', id)
     .del()
-    .then(response => resultado(null, response))
-    .catch(err => resultado(err, null));
-}
 
 module.exports = RelationProfessorDisciplina;

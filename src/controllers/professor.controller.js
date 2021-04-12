@@ -2,6 +2,8 @@ const Professor = require('../model/professor');
 const RelationProfessorDisciplina = require('../model/relationProfessorDisciplina')
 const Disciplina = require('../model/disciplina')
 
+const parse = list => Object.values(JSON.parse(JSON.stringify(list)))
+
 module.exports = {
   create(req, res) {
 
@@ -23,9 +25,9 @@ module.exports = {
             professor_id: id,
             disciplina_id: disciplinaId
           }
-          RelationProfessorDisciplina.create(req, err => err)
-          const response = await Disciplina.findDisciplinaById(disciplinaId)
-          return Object.values(JSON.parse(JSON.stringify(response)))
+          await RelationProfessorDisciplina.create(req)
+          const response = parse(await Disciplina.findDisciplinaById(disciplinaId))
+          return response[0]
         })
         
         res.send({
@@ -36,42 +38,59 @@ module.exports = {
     })
   },
 
-  read(req, res) {
-    if (req.query.nome) {
-      Professor.getByName(req.query.nome, (error, dados) => {
-        if (error) {
-          res.status(500).send({ message: error });
-        } else {
-          res.send(dados);
-        }
+  async read(req, res) {
+    let professores
+    if(req.query.nome) {  
+      professores = await Professor.getByName(req.query.nome)
+    }else{
+      professores = await Professor.read()
+    }
+    const professoresFormatted = await Promise.all(professores.map(async professor => {
+      const relacaoDisciplinaprofessor = parse(await RelationProfessorDisciplina.findById(professor.id))
+      const disciplinas = await Promise.all(relacaoDisciplinaprofessor.map(async relacao => {
+        const disciplina = await Disciplina.findDisciplinaById(relacao.disciplina_id)
+        return parse(disciplina)
+      }))
+      
+      return({
+        ...professor,
+        disciplinas: disciplinas.map(d => d[0])
       })
-    } else {
-      Professor.read((error, dados) => {
-        if (error) {
-          res.status(500).send({ message: error });
-        } else {
-          res.send(dados);
+    }))
+    if(!professoresFormatted) {
+      res.status(500).send({message: 'Erro na requisição'})
+      return
+    }
+    res.send(professoresFormatted)
+  },
+
+  async update(req, res) {
+    const professor = new Professor(req.body);
+    let disciplinas
+    if(req.body.disciplinas){
+      const disciplinasId =  req.body.disciplinas
+      delete req.body.disciplinas
+
+      await RelationProfessorDisciplina.remove(req.params.id)
+
+      disciplinas = disciplinasId.map(async disciplinaId => {
+        const body = {
+          professor_id: req.params.id,
+          disciplina_id: disciplinaId
         }
+        await RelationProfessorDisciplina.create(body, err => err)
+        const response = parse(await Disciplina.findDisciplinaById(disciplinaId))
+        return response[0]
       })
     }
+
+    await Professor.update(req.params.id, professor)
+    res.send({...professor, disciplinas: await Promise.all(disciplinas)})
+    return
   },
 
-  update(req, res) {
-    const professor = new Professor(req.body);
-    Professor.update(req.params.id, professor, (error, dados) => {
-      if (error) {
-        res.status(500).send({ message: error });
-      } else {
-        if (dados > 0) {
-          res.send({ id: dados, ...req.body });
-        } else {
-          res.send({ message: `Professor de id ${req.params.id} não encontrada!` });
-        }
-      }
-    })
-  },
-
-  delete(req, res) {
+  async delete(req, res) {
+    await RelationProfessorDisciplina.remove(req.params.id)
     Professor.remove(req.params.id, (error, resultado) => {
       if (error) {
         res.status(500).send({ message: error });

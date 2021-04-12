@@ -13,18 +13,10 @@ const Professor = function (professor) {
   this.complemento = professor.complemento;
 }
 
-Professor.read = resultado => {
-  knex('professores')
-    .then(response => resultado(null, response))
-    .catch(err => resultado(err, null));
-}
+Professor.read = () => knex('professores')
 
-Professor.getByName = (nome, resultado) => {
-  knex('professores')
-    .where('nome', 'like', `%${nome}%`)
-    .then(response => resultado(null, response))
-    .catch(err => resultado(err, null))
-};
+Professor.getByName = nome => 
+  knex('professores').where('nome', 'like', `%${nome}%`)
 
 Professor.findById = (id, resultado) => {
   knex('professores')
@@ -39,13 +31,8 @@ Professor.create = (professor, resultado) => {
     .catch(err => resultado(err, null))
 }
 
-Professor.update = (id, professor, resultado) => {
-  knex('professores')
-    .where('id', id)
-    .update(professor)
-    .then(response => resultado(null, response))
-    .catch(err => resultado(err, null));
-}
+Professor.update = (id, professor) => 
+  knex('professores').where('id', id).update(professor)
 
 Professor.remove = (id, resultado) => {
   knex('professores')
