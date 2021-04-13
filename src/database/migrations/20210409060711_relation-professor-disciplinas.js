@@ -15,7 +15,6 @@ exports.up = knex => knex.schema.createTable('relation-professor-disciplina', ta
   table.string('bairro').notNullable();
   table.string('endereco').notNullable();
   table.string('complemento').notNullable();
-  table.integer('disciplina_id').unsigned().references('relation-professor-disciplina.id');
 });;
 
 exports.down = knex => knex.schema.dropTable('professores').dropTable('relation-professor-disciplina');
