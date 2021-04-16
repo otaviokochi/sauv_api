@@ -1,6 +1,13 @@
 const { response } = require("express");
 const knex = require("../database/db");
 
+const estadoMatriculaEnum = {
+  matriculado: "MATRICULADO",
+  matricula_vencida: "MATRICULA_VENCIDA",
+  inativo: "INATIVO",
+  trancada: "TRANCADA"
+};
+
 class Aluno {
   constructor(aluno) {
     this.nome = aluno.nome;
@@ -18,7 +25,7 @@ class Aluno {
     this.bairro = aluno.bairro;
     this.endereco = aluno.endereco;
     this.complemento = aluno.complemento;
-    this.estadoMatricula = "matriculado";
+    this.estadoMatricula = estadoMatriculaEnum.matriculado;
   }
   static read(resultado) {
     knex("aluno")
@@ -31,11 +38,9 @@ class Aluno {
       .then((response) => resultado(null, response))
       .catch((err) => resultado(err, null));
   }
-  static findByCPF(cpf, resultado) {
-    knex("aluno")
-      .where("cpf", cpf)
-      .then((response) => resultado(null, response))
-      .catch((err) => resultado(err, null));
+  static async findByCPF(cpf, resultado) {
+    const response = await knex("aluno").where("cpf", cpf);
+    return response;
   }
   static create(aluno, resultado) {
     knex("aluno")
@@ -58,7 +63,7 @@ class Aluno {
       .catch((err) => resultado(err, null));
   }
   static trancar(cpf, aluno, resultado) {
-    aluno.estadoMatricula = "trancada";
+    aluno.estadoMatricula = estadoMatriculaEnum.trancada;
     knex("aluno")
       .where("cpf", cpf)
       .update(aluno)

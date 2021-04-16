@@ -1,12 +1,11 @@
 module.exports = {
+
   development: {
-    client: 'mysql',
+    client: 'sqlite3',
     connection: {
-      host: "localhost",
-      user: "root",
-      password: "",
-      database: "sauv"
+      filename: './src/database/dev.sqlite3'
     },
+    useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
       directory: `${__dirname}/src/database/migrations`
@@ -14,5 +13,7 @@ module.exports = {
     seeds: {
       directory: `${__dirname}/src/database/seeds`
     }
+
   },
+
 };
