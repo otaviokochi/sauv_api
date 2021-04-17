@@ -12,7 +12,7 @@ User.criar = (novoUser, resultado) => {
     .insert({
       ...novoUser
     })
-    .then(response => resultado(null, response))
+    .then(response => resultado(null, {...novoUser, id: response[0]}))
     .catch(err => resultado(err, null));
 }
 
@@ -25,6 +25,7 @@ User.criar = (novoUser, resultado) => {
 User.getUser = (username, resultado) => {
   knex('users')
     .where('username', username)
+    .first()
     .then(response => resultado(null, response))
     .catch(err => resultado(err, null));
 };
