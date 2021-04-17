@@ -1,4 +1,3 @@
-const { response } = require("express");
 const knex = require("../database/db");
 
 class Aluno {
@@ -10,6 +9,7 @@ class Aluno {
     this.sexo = aluno.sexo;
     this.serie = aluno.serie;
     this.turma = aluno.turma;
+    this.anoTurma = aluno.anoTurma;
     this.nomeResponsavel = aluno.nomeResponsavel;
     this.cpfResponsavel = aluno.cpfResponsavel;
     this.telefoneResponsavel = aluno.telefoneResponsavel;
@@ -31,32 +31,55 @@ class Aluno {
       .then((response) => resultado(null, response))
       .catch((err) => resultado(err, null));
   }
-  static findByCPF(cpf, resultado) {
-    knex("aluno")
+
+  static async findByCPF(cpf) {
+    return knex("aluno")
       .where("cpf", cpf)
-      .then((response) => resultado(null, response))
-      .catch((err) => resultado(err, null));
   }
-  static create(aluno, resultado) {
-    knex("aluno")
-      .insert(aluno)
-      .then((response) => resultado(null, { id: response[0], ...aluno }))
-      .catch((err) => resultado(err, null));
+
+  static async getQtddAlunosTurma({serie, turma, anoTurma}) {
+    return knex("aluno")
+      .where({
+        serie,
+        turma,
+        anoTurma
+      }).count('cpf as quantidadeAlunos')
   }
-  static update(cpf, aluno, resultado) {
-    knex("aluno")
-      .where("cpf", cpf)
-      .update(aluno)
-      .then((response) => resultado(null, response))
-      .catch((err) => resultado(err, null));
+
+  static async alunosTurma({serie, turma, anoTurma}) {
+    return knex("aluno")
+      .where({
+        serie,
+        turma,
+        anoTurma
+      }).select('nome as nomeAluno', 'cpf as cpfAluno', 'nomeResponsavel', 'cep')
+  }
+
+  static create(aluno) {
+    return new Promise((resolve, reject) => {
+      knex("aluno")
+        .insert(aluno)
+        .then((response) => resolve({ id: response[0], ...aluno }))
+        .catch((err) => reject(err));
+    })
+  }
+  static update(cpf, aluno) {
+    return new Promise((resolve, reject) => {
+      knex("aluno")
+        .where("cpf", cpf)
+        .update(aluno)
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    })
   }
   static remove(cpf, resultado) {
-    knex("aluno")
-      .where("cpf", cpf)
-      .del()
-      .then((response) => resultado(null, response))
-      .catch((err) => resultado(err, null));
+      knex("aluno")
+        .where("cpf", cpf)
+        .del()
+        .then((response) => resultado(null, response))
+        .catch((err) => resultado(err, null));
   }
+
   static trancar(cpf, aluno, resultado) {
     aluno.estadoMatricula = "trancada";
     knex("aluno")
