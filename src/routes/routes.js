@@ -8,6 +8,7 @@ const turma = require('../controllers/turma.controller');
 const user = require('../controllers/user.controller');
 const { authenticate } = require('../config/passport.config');
 const { signin } = require('../controllers/auth.controller');
+const { buscaRelatorioTurma } = require('../controllers/relatorioTurma');
 
 module.exports = app => {
   app.route("/signin")
@@ -88,12 +89,18 @@ module.exports = app => {
     .get(turma.buscaTurma)
 
   app.route("/users")
-    .all(authenticate())
+    // .all(authenticate())
     .post(user.criar)
 
   app.route("/users/:username")
-    .all(authenticate())
+    // .all(authenticate())
     .get(user.busca)
     .put(user.atualizar)
     .delete(user.deletar)
+
+
+  app.route("/relatorio-turma")
+    // .all(authenticate())
+    .get(buscaRelatorioTurma)
+
 }

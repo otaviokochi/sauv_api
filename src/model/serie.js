@@ -14,7 +14,7 @@ Serie.criar = (novaSerie, resultado) => {
     .catch(err => resultado(err, null));
 }
 
-Serie.getAll = async (pages, resultado) => {
+Serie.getAll = async (resultado) => {
   // const limit = 10;
   // const page = pages || 1;
   // const res = knex('series').count('id');
@@ -36,6 +36,7 @@ Serie.getAll = async (pages, resultado) => {
 Serie.getByAnoLetivo = (anoLetivo, resultado) => {
   knex('series')
     .where('anoLetivo', anoLetivo)
+    .first()
     .then(response => resultado(null, response))
     .catch(err => resultado(err, null));
 }
@@ -43,6 +44,7 @@ Serie.getByAnoLetivo = (anoLetivo, resultado) => {
 Serie.getById = (id, resultado) => {
   knex('series')
     .where('id', id)
+    .first()
     .then(response => resultado(null, response))
     .catch(err => resultado(err, null));
 }

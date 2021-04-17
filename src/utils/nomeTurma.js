@@ -21,7 +21,6 @@ const nomeTurma = (serie, turma) => {
       break;
     case 7:
       nome = `Sétima série ${turma.toUpperCase()}`;
-      console.log('entro aqui')
       break;
     case 8:
       nome = `Oitava série ${turma.toUpperCase()}`;

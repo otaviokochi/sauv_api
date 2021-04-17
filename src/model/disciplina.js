@@ -3,7 +3,6 @@ const knex = require('../database/db')
 const Disciplina = function(disciplina) {
   this.nomeDisciplina = disciplina.nomeDisciplina;
   this.cargaHoraria = disciplina.cargaHoraria;
-  this.professor = disciplina.professor;
 }
 
 Disciplina.criar = (novaDisciplina, resultado) => {

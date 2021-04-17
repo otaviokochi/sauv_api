@@ -25,7 +25,6 @@ module.exports = {
           console.log(error);
           res.status(500).send({ message: error });
         } else {
-          console.log(dados)
           res.send(dados);
         }
       })
@@ -35,7 +34,6 @@ module.exports = {
           console.log(error);
           res.status(500).send({ message: error });
         } else {
-          console.log(dados)
           res.send(dados);
         }
       })
