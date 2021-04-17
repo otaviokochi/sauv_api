@@ -7,6 +7,7 @@ exports.up = (knex) =>
     table.string("sexo").notNullable();
     table.integer("serie").notNullable();
     table.string("turma").notNullable();
+    table.integer("anoTurma").notNullable();
     table.string("nomeResponsavel").notNullable();
     table.string("cpfResponsavel").notNullable();
     table.string("telefoneResponsavel").notNullable();
