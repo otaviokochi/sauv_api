@@ -1,5 +1,12 @@
 const knex = require("../database/db");
 
+const estadoMatriculaEnum = {
+  matriculado: "MATRICULADO",
+  matricula_vencida: "MATRICULA_VENCIDA",
+  inativo: "INATIVO",
+  trancada: "TRANCADA"
+};
+
 class Aluno {
   constructor(aluno) {
     this.nome = aluno.nome;
@@ -18,7 +25,7 @@ class Aluno {
     this.bairro = aluno.bairro;
     this.endereco = aluno.endereco;
     this.complemento = aluno.complemento;
-    this.estadoMatricula = "matriculado";
+    this.estadoMatricula = estadoMatriculaEnum.matriculado;
   }
   static read(resultado) {
     knex("aluno")
@@ -35,6 +42,7 @@ class Aluno {
   static async findByCPF(cpf) {
     return knex("aluno")
       .where("cpf", cpf)
+
   }
 
   static async getQtddAlunosTurma({serie, turma, anoTurma}) {
@@ -81,7 +89,7 @@ class Aluno {
   }
 
   static trancar(cpf, aluno, resultado) {
-    aluno.estadoMatricula = "trancada";
+    aluno.estadoMatricula = estadoMatriculaEnum.trancada;
     knex("aluno")
       .where("cpf", cpf)
       .update(aluno)

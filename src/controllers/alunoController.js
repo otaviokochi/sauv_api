@@ -50,6 +50,7 @@ module.exports = {
           res.send(dados);
         }
       })
+
     } else {
       Aluno.read((error, dados) => {
         if (error) {

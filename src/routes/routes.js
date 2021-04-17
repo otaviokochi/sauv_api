@@ -56,6 +56,9 @@ module.exports = app => {
     .put(disciplina.atualizar)
     .delete(disciplina.deletar)
 
+  app.route("/trancar")
+    .all(authenticate())
+    .patch(AlunoController.trancar)
 
   app.route("/series")
     .all(authenticate())
