@@ -6,7 +6,7 @@ exports.up = (knex) =>
     table.string("email").notNullable();
     table.string("sexo").notNullable();
     table.integer("serie").notNullable();
-    table.string("turma").notNullable();
+    table.integer("turma").notNullable();
     table.string("nomeResponsavel").notNullable();
     table.string("cpfResponsavel").notNullable();
     table.string("telefoneResponsavel").notNullable();
@@ -19,8 +19,8 @@ exports.up = (knex) =>
 
     table.primary("cpf");
 
-    table.foreign("serie").references("anoLetivo").inTable("series");
-    // table.foreign("turma").references("turma").inTable("turmas");
+    table.foreign("serie").references("id").inTable("series");
+    table.foreign("turma").references("id").inTable("turmas");
   });
 
 exports.down = (knex) => knex.schema.dropTable("aluno");
