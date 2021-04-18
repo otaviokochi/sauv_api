@@ -35,7 +35,7 @@ module.exports = {
 
   update(req, res) {
     const aluno = new Aluno(req.body);
-    Aluno.update(req.body.cpf, aluno, (error, dados) => {
+    Aluno.update(req.params.id, aluno, (error, dados) => {
       if (error) {
         res.status(500).send({ message: error + "" });
       } else {
@@ -43,7 +43,7 @@ module.exports = {
           res.send({ cpf: dados, ...req.body });
         } else {
           res.send({
-            message: `Aluno de CPF ${req.params.cpf} não foi encontrado!`,
+            message: `Aluno de CPF ${req.params.id} não foi encontrado!`,
           });
         }
       }
@@ -51,12 +51,12 @@ module.exports = {
   },
 
   delete(req, res) {
-    Aluno.remove(req.body.cpf, (error, _) => {
+    Aluno.remove(req.params.id, (error, _) => {
       if (error) {
         res.status(500).send({ message: error + "" });
       } else {
         res.send({
-          message: `Aluno de CPF ${req.body.cpf} deletado com sucesso!`,
+          message: `Aluno de ID ${req.params.id} deletado com sucesso!`,
         });
       }
     });

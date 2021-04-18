@@ -17,7 +17,10 @@ module.exports = app => {
     .all(authenticate())
     .post(AlunoController.create)
     .get(AlunoController.read)
-    .put(AlunoController.update)
+
+  app.route("/aluno/:id")
+    .all(authenticate())
+    .patch(AlunoController.update)
     .delete(AlunoController.delete)
 
   app.route("/coordenador")

@@ -1,12 +1,14 @@
 exports.up = (knex) =>
   knex.schema.createTable("aluno", (table) => {
+    table.increments("id");
     table.string("nome").notNullable();
     table.string("rg").notNullable();
-    table.string("cpf").notNullable();
+    table.string("cpf").notNullable().unique();
     table.string("email").notNullable();
     table.string("sexo").notNullable();
     table.integer("serie").notNullable();
     table.integer("turma").notNullable();
+    table.integer("ano").notNullable();
     table.string("nomeResponsavel").notNullable();
     table.string("cpfResponsavel").notNullable();
     table.string("telefoneResponsavel").notNullable();
@@ -16,8 +18,6 @@ exports.up = (knex) =>
     table.string("endereco").notNullable();
     table.string("complemento").notNullable();
     table.string('estadoMatricula');
-
-    table.primary("cpf");
 
     table.foreign("serie").references("id").inTable("series");
     table.foreign("turma").references("id").inTable("turmas");

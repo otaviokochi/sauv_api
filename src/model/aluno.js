@@ -17,6 +17,7 @@ class Aluno {
     this.sexo = aluno.sexo;
     this.serie = aluno.serie;
     this.turma = aluno.turma;
+    this.ano = aluno.ano;
     this.nomeResponsavel = aluno.nomeResponsavel;
     this.cpfResponsavel = aluno.cpfResponsavel;
     this.telefoneResponsavel = aluno.telefoneResponsavel;
@@ -48,16 +49,16 @@ class Aluno {
       .then((response) => resultado(null, { id: response[0], ...aluno }))
       .catch((err) => resultado(err, null));
   }
-  static update(cpf, aluno, resultado) {
+  static update(id, aluno, resultado) {
     knex("aluno")
-      .where("cpf", cpf)
+      .where("id", id)
       .update(aluno)
       .then((response) => resultado(null, response))
       .catch((err) => resultado(err, null));
   }
-  static remove(cpf, resultado) {
+  static remove(id, resultado) {
     knex("aluno")
-      .where("cpf", cpf)
+      .where("id", id)
       .del()
       .then((response) => resultado(null, response))
       .catch((err) => resultado(err, null));
