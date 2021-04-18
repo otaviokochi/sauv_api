@@ -19,13 +19,15 @@ const signin = async (req, res) => {
   
   if (!passwordMatches) return res.status(401).send("Email/senha incorretos");
 
-  const now = Math.floor(Date.now() / 1000);
+  const DATE_NOW = Math.floor(Date.now() / 1000);
+  const TOKEN_EXP_TIME = DATE_NOW + (60 * 60 * 24 * 3) // 60 *60 *24 *3 = 3 DAYS.
+
   const payload = {
     id: userDB.id,
     username: userDB.username,
     tipo: userDB.tipo,
-    iat: now,
-    exp: now + (60 * 60 * 24 * 3)
+    iat: DATE_NOW,
+    exp: TOKEN_EXP_TIME
   }
 
   res.json({

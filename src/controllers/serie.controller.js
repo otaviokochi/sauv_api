@@ -2,16 +2,16 @@ const { response } = require('express');
 const Serie = require('../model/serie');
 
 module.exports = {
-  criar (req, res) {
+  criar(req, res) {
     const serie = new Serie(req.body);
     Serie.criar(serie, (error, dados) => {
-      if(error) {
+      if (error) {
         if (error.code === 'ER_DUP_ENTRY') {
           console.log(error);
           res.status(500).send({ message: `Série duplicada!` });
         } else {
           console.log(error.message);
-          res.status(500).send({ message: error.message });
+          res.status(500).send({ message: "Erro ao criar série" });
         }
       } else {
         res.send(dados);
@@ -19,71 +19,57 @@ module.exports = {
     })
   },
 
-  buscaSeries (req, res) {
-    if(req.params.anoLetivo) {
-      Serie.getByAnoLetivo(req.params.anoLetivo, (error, dados) => {
-        if(error) {
-          console.log(error);
-          res.status(500).send({ message: error });
-        } else {
-          res.send(dados);
-        }
-      })
-    } else {
-      const pages = req.query.pages || 1;
-      Serie.getAll(pages,(error, dados) => {
-        if(error) {
-          console.log(error);
-          res.status.send({ message: error });
-        } else {
-          console.log(dados);
-          dados.forEach(serie => {
-            serie.disciplinas = JSON.parse(serie.disciplinas)
-          })
-          res.send(dados);
-        }
-      })
-    }
-  },
-
-  buscaSerie (req, res) {
-    Serie.getById(req.params.id, (error, dados) => {
-      if(error) {
+  buscaSeries(req, res) {
+    Serie.getAll((error, dados) => {
+      if (error) {
         console.log(error);
-        res.status(500).send({ message: error });
+        res.status.send({ message: "Erro ao buscar série" });
+      } else {
+        dados.forEach(serie => {
+          serie.disciplinas = JSON.parse(serie.disciplinas)
+        })
+        res.send(dados);
+      }
+    })
+  },
+
+  buscaSerie(req, res) {
+    Serie.getByAnoLetivo(req.params.anoLetivo, (error, dados) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send({ message: "Erro ao buscar série" });
       } else {
         res.send(dados);
       }
     })
   },
 
-  atualizar (req, res) {
+  atualizar(req, res) {
     const serieAtualizada = new Serie(req.body);
     Serie.update(req.params.id, serieAtualizada, (error, dados) => {
-      if(error) {
+      if (error) {
         console.log(error);
-        res.status(500).send({ message: error });
+        res.status(500).send({ message: "Erro ao atualizar série" });
       } else {
-        if(dados > 0) {
-          res.send({ message: `Serie de ano letivo ${req.params.id} atualizada com sucesso!`});
+        if (dados > 0) {
+          res.send({ message: `Serie de ano letivo ${req.params.id} atualizada com sucesso!` });
         } else {
-          res.send({ message: `Serie de ano letivo ${req.params.id} não encontrada!`});
+          res.send({ message: `Serie de ano letivo ${req.params.id} não encontrada!` });
         }
       }
     })
   },
 
-  deletar (req, res) {
-    console.log(req.params.id)
+  deletar(req, res) {
     Serie.remove(req.params.id, (error, dados) => {
-      if(error) {
+      if (error) {
         console.log(error);
-        res.status(500).send({ message: error });
+        res.status(500).send({ message: "Erro ao deletas série" });
       } else {
-        if(dados > 0) {
-          res.send({ message: `Serie de ano letivo ${req.params.id} excluída com sucesso!`});
+        if (dados > 0) {
+          res.send({ message: `Serie de ano letivo ${req.params.id} excluída com sucesso!` });
         } else {
-          res.send({ message: `Serie de ano letivo ${req.params.id} não encontrada!`});
+          res.send({ message: `Serie de ano letivo ${req.params.id} não encontrada!` });
         }
       }
     })
