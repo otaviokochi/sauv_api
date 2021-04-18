@@ -26,7 +26,7 @@ module.exports = {
         res.status.send({ message: "Erro ao buscar série" });
       } else {
         dados.forEach(serie => {
-          serie.disciplinas = JSON.parse(serie.disciplinas)
+          serie.disciplinas = serie.disciplinas
         })
         res.send(dados);
       }

@@ -3,10 +3,9 @@ exports.up = knex => knex.schema.createTable('turmas', table => {
   table.integer('serie').notNullable();
   table.string('nome').notNullable();
   table.string('turma').notNullable();
-  //ano tipo 2020
   table.integer('ano').notNullable();
   table.foreign('serie').references('anoLetivo').inTable('series');
-  table.unique(['nome', 'ano']);
+  table.unique(['serie', 'turma']);
 });
 
 exports.down = knex => knex.schema.dropTable('turmas');
