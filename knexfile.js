@@ -1,9 +1,15 @@
+const database = process.env.NODE_ENV === "test" ? "sauvTest" : "sauv";
+
+
 module.exports = {
 
   development: {
-    client: 'sqlite3',
+    client: 'mysql',
     connection: {
-      filename: './src/database/dev.sqlite3'
+      host: "localhost",
+      user: "root",
+      password: "otaviokochi",
+      database: database
     },
     useNullAsDefault: true,
     migrations: {
