@@ -9,6 +9,7 @@ const user = require('../controllers/user.controller');
 const { authenticate } = require('../config/passport.config');
 const { signin } = require('../controllers/auth.controller');
 const { buscaRelatorioTurma } = require('../controllers/relatorioTurma');
+const { authorize } = require("passport");
 
 module.exports = app => {
   app.route("/signin")
@@ -18,8 +19,12 @@ module.exports = app => {
     .all(authenticate())
     .post(AlunoController.create)
     .get(AlunoController.read)
-    .put(AlunoController.update)
+    .patch(AlunoController.update)
     .delete(AlunoController.delete)
+
+  app.route("/aluno/:cpf")
+    .all(authenticate())
+    .get(AlunoController.find)
 
   app.route("/coordenador")
     .all(authenticate())
@@ -103,4 +108,9 @@ module.exports = app => {
     // .all(authenticate())
     .get(buscaRelatorioTurma)
 
+
+  //app.route("/frequencia")
+  //.all(authenticate())
+  //.get(frequencia)
+  //.post(frequencia)
 }

@@ -32,11 +32,13 @@ class Funcionario {
       .then((response) => resultado(null, response))
       .catch((err) => resultado(err, null));
   }
-  static create(funcionario, resultado) {
-    knex("funcionario")
+  static create(funcionario) {
+    return new Promise((resolve, reject) => {
+      knex("funcionario")
       .insert(funcionario)
-      .then((response) => resultado(null, { id: response[0], ...funcionario }))
-      .catch((err) => resultado(err, null));
+      .then((response) => resolve({ id: response[0], ...funcionario }))
+      .catch((err) => reject(err));
+    });
   }
   static update(cpf, funcionario, resultado) {
     knex("funcionario")
