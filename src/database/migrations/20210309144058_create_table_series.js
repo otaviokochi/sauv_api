@@ -1,7 +1,6 @@
-
-exports.up = knex => knex.schema.createTable('series', table => {
+ exports.up = knex => knex.schema.createTable('series', table => {
   table.increments('id');
-  table.integer('anoLetivo').notNullable().unique();
+  table.integer('serie').notNullable().unique();
   table.json('disciplinas').notNullable();
 });
 

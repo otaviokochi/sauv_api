@@ -32,11 +32,13 @@ class Coordenador {
       .then((response) => resultado(null, response))
       .catch((err) => resultado(err, null));
   }
-  static create(coordenador, resultado) {
-    knex("coordenador")
+  static create(coordenador) {
+    return new Promise((resolve, reject) => {
+      knex("coordenador")
       .insert(coordenador)
-      .then((response) => resultado(null, { id: response[0], ...coordenador }))
-      .catch((err) => resultado(err, null));
+      .then((response) => resolve({ id: response[0], ...coordenador }))
+      .catch((err) => reject(err));
+    });
   }
   static update(cpf, coordenador, resultado) {
     knex("coordenador")
