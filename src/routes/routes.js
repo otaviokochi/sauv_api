@@ -108,4 +108,9 @@ module.exports = app => {
     // .all(authenticate())
     .get(buscaRelatorioTurma)
 
+
+  //app.route("/frequencia")
+  //.all(authenticate())
+  //.get(frequencia)
+  //.post(frequencia)
 }
