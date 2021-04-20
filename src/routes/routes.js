@@ -109,10 +109,14 @@ module.exports = app => {
     .all(authenticate())
     .get(buscaRelatorioTurma)
 
+  app.route("/trocar-turma")
+    .all(authenticate())
+    .get(AlunoController.trocarAluno())
+
   app.route("/notas")
     .all(authenticate())
     .post(notas.create)
-  
+
   app.route("/notas/:turmaId/:disciplinaId")
     .all(authenticate())
     .get(notas.read)
