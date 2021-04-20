@@ -1,3 +1,6 @@
+const database = process.env.NODE_ENV === "test" ? "sauvTest" : "sauv";
+
+
 module.exports = {
 
   development: {

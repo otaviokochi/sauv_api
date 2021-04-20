@@ -7,10 +7,11 @@ module.exports = {
     Disciplina.criar(disciplina, (error, dados) => {
       if(error) {
         console.log(error);
-        if (error.code === 'ER_DUP_ENTRY') {
+        if (error.code === 'SQLITE_CONSTRAINT') {
           res.status(500).send({ message: `Disciplina duplicada!` });
         } else {
-          res.status(500).send({ message: error.message });
+          console.log(error.code)
+          res.status(500).send({ message: "Erro ao criar disciplina" });
         }
       } else {
         res.send(dados);
@@ -23,7 +24,7 @@ module.exports = {
       Disciplina.getByName(req.query.nome, (error, dados) => {
         if(error) {
           console.log(error);
-          res.status(500).send({ message: error });
+          res.status(500).send({ message: "Erro ao buscar disciplina" });
         } else {
           res.send(dados);
         }
@@ -32,7 +33,7 @@ module.exports = {
       Disciplina.getAll((error, dados) => {
         if(error) {
           console.log(error);
-          res.status(500).send({ message: error });
+          res.status(500).send({ message: "Erro ao buscar disciplina" });
         } else {
           res.send(dados);
         }
@@ -44,7 +45,7 @@ module.exports = {
     Disciplina.findById(req.params.id, (error, dados) => {
       if(error) {
         console.log(error);
-        res.status(500).send({ message: error });
+        res.status(500).send({ message: "Erro ao buscar disciplina" });
       } else {
         res.send(dados);
       }
@@ -56,7 +57,7 @@ module.exports = {
     Disciplina.update(req.params.id, disciplinaAtualizada, (error, dados) => {
       if(error) {
         console.log(error);
-        res.status(500).send({ message: error });
+        res.status(500).send({ message: "Erro ao atualizar turma" });
       } else {
         //dados contem o numero de linhas afetadas
         if(dados > 0) {
