@@ -10,8 +10,6 @@ exports.up = knex => knex.schema.createTable('funcionario', table => {
     table.string('pais').notNullable();
     table.string('estado').notNullable();
     table.string('cidade').notNullable();
-    
-    table.primary('cpf');
 });
 
 exports.down = knex => knex.schema.dropTable('funcionario');

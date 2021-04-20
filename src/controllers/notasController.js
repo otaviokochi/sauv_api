@@ -1,4 +1,3 @@
-const { update } = require("../model/aluno");
 const Notas = require("../model/notas");
 
 module.exports = {

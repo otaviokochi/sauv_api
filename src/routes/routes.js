@@ -10,6 +10,7 @@ const { authenticate } = require('../config/passport.config');
 const { signin } = require('../controllers/auth.controller');
 const { buscaRelatorioTurma } = require('../controllers/relatorioTurma');
 const notas = require('../controllers/notasController');
+const frequencia = require('../controllers/frequenciaController');
 const { authorize } = require("passport");
 
 module.exports = app => {
@@ -121,8 +122,13 @@ module.exports = app => {
     .all(authenticate())
     .patch(notas.update)
 
-  //app.route("/frequencia")
-  //.all(authenticate())
-  //.get(frequencia)
-  //.post(frequencia)
+  app.route("/frequencia")
+    .all(authenticate())
+    .post(frequencia.create)
+    .get(frequencia.readCPF)
+
+  app.route("/frequencia/:id")
+    .all(authenticate())
+    .get(frequencia.readId)
+    .patch(frequencia.update)
 }
