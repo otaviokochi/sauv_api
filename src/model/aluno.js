@@ -46,6 +46,12 @@ class Aluno {
       .catch((err) => resultado(err, null));
   }
 
+  static async findByCPFAsync(cpf) {
+    return knex("aluno")
+      .where("cpf", cpf)
+      .first()
+  }
+
   static async getQtddAlunosTurma({ serie, turma, anoTurma }) {
     return knex("aluno")
       .where({
@@ -82,6 +88,13 @@ class Aluno {
       .then((response) => resultado(null, response))
       .catch((err) => resultado(err, null));
   }
+
+  static updateAsync(cpf, aluno) {
+    return knex("aluno")
+      .where("cpf", cpf)
+      .update(aluno)
+  }
+
   static remove(cpf, resultado) {
     knex("aluno")
       .where("cpf", cpf)

@@ -104,10 +104,12 @@ module.exports = {
         nomeProfessor,
         disciplina,
         nomeTurma: turmaAtualizada.nome,
+        turma: turmaAtualizada.turma,
         serieTurma: turmaAtualizada.serie,
         ano: turmaAtualizada.ano,
       })
     })).then(_ => true).catch(error => {
+      console.log('aquiii')
       console.log(error)
       return false;
     });
