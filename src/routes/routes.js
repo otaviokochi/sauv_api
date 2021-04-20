@@ -31,14 +31,14 @@ module.exports = app => {
     .all(authenticate())
     .post(CoordenadorController.create)
     .get(CoordenadorController.read)
-    .put(CoordenadorController.update)
+    .patch(CoordenadorController.update)
     .delete(CoordenadorController.delete)
 
   app.route("/funcionario")
     .all(authenticate())
     .post(FuncionarioController.create)
     .get(FuncionarioController.read)
-    .put(FuncionarioController.update)
+    .patch(FuncionarioController.update)
     .delete(FuncionarioController.delete)
 
   app.route("/professores")
