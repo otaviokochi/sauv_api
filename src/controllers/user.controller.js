@@ -10,7 +10,7 @@ module.exports = {
       });
     if(password && req.body.tipo && req.body.username) {
         const user = {
-          tipo: req.body.tipo,
+          tipo: req.body.tipo.toUpperCase(),
           username: req.body.username,
           senha: password
         }
@@ -24,7 +24,8 @@ module.exports = {
               res.status(500).send({ message: "Erro ao criar usuário" });
             }
           } else {
-            res.send(dados);
+            console.log(dados);
+            res.send({ message: "Usuário criado com sucesso!" });
           }
         })
     } else {
