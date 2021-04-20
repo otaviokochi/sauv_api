@@ -37,6 +37,7 @@ module.exports = {
 
   update(req, res) {
     const coordenador = new Coordenador(req.body);
+
     Coordenador.update(req.body.cpf, coordenador, (error, dados) => {
       if (error) {
         res.status(500).send({ message: error + "" });

@@ -20,8 +20,10 @@ class Notas {
       .join("aluno", "notas.cpfAluno", "=", "aluno.cpf")
       .join("disciplinas", "notas.disciplinaId", "=", "disciplinas.id")
       .select(
+        "notas.id",
         "aluno.nome",
-        "disciplinas.id",
+        "aluno.cpf",
+        "disciplinas.id AS disciplinaId",
         "disciplinas.nomeDisciplina",
         "notas.nota1b",
         "notas.nota2b",

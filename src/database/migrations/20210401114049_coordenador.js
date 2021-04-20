@@ -2,7 +2,7 @@ exports.up = knex => knex.schema.createTable('coordenador', table => {
     table.string('primNome').notNullable();
     table.string('sobrenome').notNullable();
     table.string('genero').notNullable();
-    table.string('cpf').notNullable();
+    table.string('cpf').primary();
     table.string('rg').notNullable();
     table.string('email').notNullable();
     table.string('telefone').notNullable();
