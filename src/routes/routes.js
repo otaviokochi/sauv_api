@@ -95,30 +95,30 @@ module.exports = app => {
     .get(turma.buscaTurma)
 
   app.route("/users")
-    // .all(authenticate())
+    .all(authenticate())
     .post(user.criar)
 
   app.route("/users/:username")
-    // .all(authenticate())
+    .all(authenticate())
     .get(user.busca)
     .put(user.atualizar)
     .delete(user.deletar)
 
 
   app.route("/relatorio-turma")
-    // .all(authenticate())
+    .all(authenticate())
     .get(buscaRelatorioTurma)
 
   app.route("/notas")
-  //  .all(authenticate())
+    .all(authenticate())
     .post(notas.create)
   
   app.route("/notas/:turmaId/:disciplinaId")
-  //  .all(authenticate())
+    .all(authenticate())
     .get(notas.read)
 
   app.route("/notas/:id")
-  //  .all(authenticate())
+    .all(authenticate())
     .patch(notas.update)
 
   //app.route("/frequencia")

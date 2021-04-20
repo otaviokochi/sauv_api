@@ -86,20 +86,13 @@ module.exports = {
 
   async update(req, res) {
     const alunoAtualizado = new Aluno(req.body);
-    const alunoAntigo = await Aluno.findByCPF(req.body.cpf).catch((error) => {
-      console.log(error);
-      return new Error(error);
-    });
 
-    //if (alunoAntigo instanceof Error) return res.status(500).send({ message: error.message });
-    //if(alunoAntigo.anoTurma != alunoAtualizado.anoTurma || alunoAntigo.turma != alunoAtualizado.turma || alunoAntigo.serie != alunoAtualizado.serie)
-    //  return res.status(400).send({ message: 'Para atualizar a serie/turma do aluno vá em controles!' })
-
-    const response = await Aluno.update(req.body.cpf, alunoAtualizado);
-    //.catch(error => {
-    //  console.log(error);
-    //  return new Error(error);
-    //})
+    const response = await Aluno.update(req.body.cpf, alunoAtualizado).catch(
+      (error) => {
+        console.log(error);
+        return new Error(error);
+      }
+    );
     if (response instanceof error)
       return res.status(500).send({ message: "Errro ao atualizar o aluno!" });
 
