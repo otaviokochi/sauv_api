@@ -12,7 +12,7 @@ module.exports = {
     }
     const turma = await Turma.criar(novaTurma)
       .catch(error => {
-        if (error.code == 'ER_DUP_ENTRY') {
+      if(error.message.includes('SQLITE_CONSTRAINT: UNIQUE')) {
           console.log(error);
           res.status(500).send({ message: "Turma já criada" });
           return new Error(error);

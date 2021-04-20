@@ -3,40 +3,43 @@ const bcrypt = require('bcrypt');
 const SALT = 10;
 
 module.exports = {
-  async criar (req, res) {
+  async criar(req, res) {
+    if (!req.body.senha || req.body.senha.length <= 4) {
+      return res.status(400).send({ message: 'Senha muito pequena!' });
+    }
     const password = await bcrypt.hash(req.body.senha, SALT)
       .catch(error => {
         console.log(error);
         return false;
       });
-    if(password && req.body.tipo && req.body.username) {
-        const user = {
-          tipo: req.body.tipo.toUpperCase(),
-          username: req.body.username,
-          senha: password
-        }
-        User.criar(user, (error, dados) => {
-          if(error) {
-            if(error.code == 'ER_DUP_ENTRY') {
-              console.log(error);
-              res.status(400).send({ message: "Username já cadastrado!" });
-            } else {
-              console.log(error);
-              res.status(500).send({ message: "Erro ao criar usuário" });
-            }
+    if (password && req.body.tipo && req.body.username) {
+      const user = {
+        tipo: req.body.tipo.toUpperCase(),
+        username: req.body.username,
+        senha: password
+      }
+      User.criar(user, (error, dados) => {
+        if (error) {
+          if (error.message.includes('SQLITE_CONSTRAINT: UNIQUE')) {
+            console.log(error);
+            res.status(400).send({ message: "Username já cadastrado!" });
           } else {
-            console.log(dados);
-            res.send({ message: "Usuário criado com sucesso!" });
+            console.log(error);
+            res.status(500).send({ message: "Erro ao criar usuário" });
           }
-        })
+        } else {
+          console.log(dados);
+          res.send({ message: "Usuário criado com sucesso!" });
+        }
+      })
     } else {
       res.status(400).send({ message: 'Dados do usuário faltando' })
     }
   },
 
-  busca (req, res) {
+  busca(req, res) {
     User.getUser(req.params.username, (error, dados) => {
-      if(error) {
+      if (error) {
         console.log(error);
         res.status(500).send({ message: "Erro ao buscar usuário" });
       } else {
@@ -45,27 +48,27 @@ module.exports = {
     })
   },
 
-  async atualizar (req, res) {
+  async atualizar(req, res) {
     const password = await bcrypt.hash(req.body.senha, 10)
       .catch(error => {
         console.log(error);
         return false;
       });
-    if(password && req.body.tipo && req.body.username) {
+    if (password && req.body.tipo && req.body.username) {
       const user = {
         tipo: req.body.tipo,
         username: req.body.username,
         senha: password
       }
       User.update(req.params.username, user, (error, dados) => {
-        if(error) {
+        if (error) {
           console.log(error);
           res.status(500).send({ message: "Erro ao atualizar usuário" });
         } else {
-          if(dados > 0) {
-            res.send({ message: `Usuário de username ${req.params.username} atualizada com sucesso!`});
+          if (dados > 0) {
+            res.send({ message: `Usuário de username ${req.params.username} atualizada com sucesso!` });
           } else {
-            res.status(400).send({ message: `Usuário de username ${req.params.username} não encontrado!`});
+            res.status(400).send({ message: `Usuário de username ${req.params.username} não encontrado!` });
           }
         }
       })
@@ -74,16 +77,16 @@ module.exports = {
     }
   },
 
-  deletar (req, res) {
+  deletar(req, res) {
     User.remove(req.params.username, (error, dados) => {
-      if(error) {
+      if (error) {
         console.log(error);
         res.status(500).send({ message: "Erro ao deletar usuário" });
       } else {
-        if(dados > 0) {
-          res.send({ message: `Usuário de username ${req.params.username} deletado com sucesso!`});
+        if (dados > 0) {
+          res.send({ message: `Usuário de username ${req.params.username} deletado com sucesso!` });
         } else {
-          res.status(400).send({ message: `Usuário de username ${req.params.username} não encotrando!`});
+          res.status(400).send({ message: `Usuário de username ${req.params.username} não encotrando!` });
         }
       }
     })

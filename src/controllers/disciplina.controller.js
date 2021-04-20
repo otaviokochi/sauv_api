@@ -6,11 +6,10 @@ module.exports = {
 
     Disciplina.criar(disciplina, (error, dados) => {
       if(error) {
-        console.log(error);
-        if (error.code === 'SQLITE_CONSTRAINT') {
+        if(error.message.includes('SQLITE_CONSTRAINT: UNIQUE')) {
           res.status(500).send({ message: `Disciplina duplicada!` });
         } else {
-          console.log(error.code)
+          console.log(error)
           res.status(500).send({ message: "Erro ao criar disciplina" });
         }
       } else {

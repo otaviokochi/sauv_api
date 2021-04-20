@@ -1,2 +1,3 @@
 node_modules
 src/database/sauv.sqlite3
+src/database/sauvTest.sqlite3
