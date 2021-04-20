@@ -2,7 +2,7 @@ exports.up = (knex) =>
   knex.schema.createTable("aluno", (table) => {
     table.string("nome").notNullable();
     table.string("rg").notNullable();
-    table.string("cpf").notNullable();
+    table.string("cpf").notNullable().unique();
     table.string("email").notNullable();
     table.string("sexo").notNullable();
     table.integer("serie").notNullable();
@@ -18,10 +18,8 @@ exports.up = (knex) =>
     table.string("complemento").notNullable();
     table.string('estadoMatricula');
 
-    table.primary("cpf");
-
-    table.foreign("serie").references("anoLetivo").inTable("series");
-    // table.foreign("turma").references("turma").inTable("turmas");
+    table.foreign("serie").references("serie").inTable("series");
+    table.foreign("turma").references("turma").inTable("turmas");
   });
 
 exports.down = (knex) => knex.schema.dropTable("aluno");

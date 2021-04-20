@@ -9,6 +9,8 @@ const user = require('../controllers/user.controller');
 const { authenticate } = require('../config/passport.config');
 const { signin } = require('../controllers/auth.controller');
 const { buscaRelatorioTurma } = require('../controllers/relatorioTurma');
+const notas = require('../controllers/notasController');
+const { authorize } = require("passport");
 
 module.exports = app => {
   app.route("/signin")
@@ -18,8 +20,12 @@ module.exports = app => {
     .all(authenticate())
     .post(AlunoController.create)
     .get(AlunoController.read)
-    .put(AlunoController.update)
+    .patch(AlunoController.update)
     .delete(AlunoController.delete)
+
+  app.route("/aluno/:cpf")
+    .all(authenticate())
+    .get(AlunoController.find)
 
   app.route("/coordenador")
     .all(authenticate())
@@ -70,7 +76,7 @@ module.exports = app => {
     .put(serie.atualizar)
     .delete(serie.deletar)
 
-  app.route("/series/:anoLetivo")
+  app.route("/series/:serie")
     .all(authenticate())
     .get(serie.buscaSerie);
 
@@ -103,4 +109,20 @@ module.exports = app => {
     // .all(authenticate())
     .get(buscaRelatorioTurma)
 
+  app.route("/notas")
+  //  .all(authenticate())
+    .post(notas.create)
+  
+  app.route("/notas/:turmaId/:disciplinaId")
+  //  .all(authenticate())
+    .get(notas.read)
+
+  app.route("/notas/:id")
+  //  .all(authenticate())
+    .patch(notas.update)
+
+  //app.route("/frequencia")
+  //.all(authenticate())
+  //.get(frequencia)
+  //.post(frequencia)
 }
