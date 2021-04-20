@@ -47,8 +47,9 @@ class Aluno {
   }
 
   static async findByCPFAsync(cpf) {
-    knex("aluno")
+    return knex("aluno")
       .where("cpf", cpf)
+      .first()
   }
 
   static async getQtddAlunosTurma({ serie, turma, anoTurma }) {
@@ -89,7 +90,7 @@ class Aluno {
   }
 
   static updateAsync(cpf, aluno) {
-    knex("aluno")
+    return knex("aluno")
       .where("cpf", cpf)
       .update(aluno)
   }
