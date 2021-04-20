@@ -1,12 +1,12 @@
-const { response } = require('express');
-const Serie = require('../model/serie');
+const { response } = require("express");
+const Serie = require("../model/serie");
 
 module.exports = {
   criar(req, res) {
     const serie = new Serie(req.body);
     Serie.criar(serie, (error, dados) => {
       if (error) {
-        if (error.code === 'ER_DUP_ENTRY') {
+        if (error.code === "ER_DUP_ENTRY") {
           console.log(error);
           res.status(500).send({ message: `Série duplicada!` });
         } else {
@@ -16,7 +16,7 @@ module.exports = {
       } else {
         res.send(dados);
       }
-    })
+    });
   },
 
   buscaSeries(req, res) {
@@ -25,23 +25,23 @@ module.exports = {
         console.log(error);
         res.status.send({ message: "Erro ao buscar série" });
       } else {
-        dados.forEach(serie => {
-          serie.disciplinas = serie.disciplinas
-        })
+        dados.forEach((serie) => {
+          serie.disciplinas = serie.disciplinas;
+        });
         res.send(dados);
       }
-    })
+    });
   },
 
   buscaSerie(req, res) {
-    Serie.getByAnoLetivo(req.params.anoLetivo, (error, dados) => {
+    Serie.getByAnoLetivo(req.params.serie, (error, dados) => {
       if (error) {
         console.log(error);
         res.status(500).send({ message: "Erro ao buscar série" });
       } else {
         res.send(dados);
       }
-    })
+    });
   },
 
   atualizar(req, res) {
@@ -52,12 +52,16 @@ module.exports = {
         res.status(500).send({ message: "Erro ao atualizar série" });
       } else {
         if (dados > 0) {
-          res.send({ message: `Serie de ano letivo ${req.params.id} atualizada com sucesso!` });
+          res.send({
+            message: `Serie de ano letivo ${req.params.id} atualizada com sucesso!`,
+          });
         } else {
-          res.send({ message: `Serie de ano letivo ${req.params.id} não encontrada!` });
+          res.send({
+            message: `Serie de ano letivo ${req.params.id} não encontrada!`,
+          });
         }
       }
-    })
+    });
   },
 
   deletar(req, res) {
@@ -67,12 +71,15 @@ module.exports = {
         res.status(500).send({ message: "Erro ao deletas série" });
       } else {
         if (dados > 0) {
-          res.send({ message: `Serie de ano letivo ${req.params.id} excluída com sucesso!` });
+          res.send({
+            message: `Serie de ano letivo ${req.params.id} excluída com sucesso!`,
+          });
         } else {
-          res.send({ message: `Serie de ano letivo ${req.params.id} não encontrada!` });
+          res.send({
+            message: `Serie de ano letivo ${req.params.id} não encontrada!`,
+          });
         }
       }
-    })
-  }
-
-}
+    });
+  },
+};

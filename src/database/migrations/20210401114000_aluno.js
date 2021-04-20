@@ -18,8 +18,8 @@ exports.up = (knex) =>
     table.string("complemento").notNullable();
     table.string('estadoMatricula');
 
-    table.foreign("serie").references("id").inTable("series");
-    table.foreign("turma").references("id").inTable("turmas");
+    table.foreign("serie").references("serie").inTable("series");
+    table.foreign("turma").references("turma").inTable("turmas");
   });
 
 exports.down = (knex) => knex.schema.dropTable("aluno");

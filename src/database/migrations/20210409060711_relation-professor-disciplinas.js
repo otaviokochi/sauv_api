@@ -1,6 +1,6 @@
 exports.up = (knex) =>
   knex.schema
-    .createTable("professor", (table) => {
+    .createTable("professores", (table) => {
       table.increments("id").primary();
       table.string("nome").notNullable();
       table.string("cpf").notNullable();

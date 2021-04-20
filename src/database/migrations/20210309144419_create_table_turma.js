@@ -4,8 +4,8 @@ exports.up = knex => knex.schema.createTable('turmas', table => {
   table.string('nome').notNullable();
   table.string('turma').notNullable();
   table.integer('ano').notNullable();
-  table.foreign('serie').references('anoLetivo').inTable('series');
-  table.unique(['serie', 'turma']);
+  table.foreign('serie').references('serie').inTable('series');
+  table.unique(['serie', 'turma', 'ano']);
 });
 
 exports.down = knex => knex.schema.dropTable('turmas');
