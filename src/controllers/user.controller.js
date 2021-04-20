@@ -1,9 +1,10 @@
 const User = require('../model/user');
 const bcrypt = require('bcrypt');
+const SALT = 10;
 
 module.exports = {
   async criar (req, res) {
-    const password = await bcrypt.hash(req.body.senha, 10)
+    const password = await bcrypt.hash(req.body.senha, SALT)
       .catch(error => {
         console.log(error);
         return false;
