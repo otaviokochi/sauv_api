@@ -4,7 +4,7 @@ const SALT = 10;
 
 module.exports = {
   async criar(req, res) {
-    if (req.body.senha.length <= 4) {
+    if (!req.body.senha || req.body.senha.length <= 4) {
       return res.status(400).send({ message: 'Senha muito pequena!' });
     }
     const password = await bcrypt.hash(req.body.senha, SALT)
