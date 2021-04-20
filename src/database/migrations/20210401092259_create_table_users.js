@@ -1,9 +1,14 @@
+exports.up = knex => knex.schema.raw(`
+  CREATE TABLE
+    users
+  (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
+    tipo TEXT NOT NULL CHECK(tipo = "PROFESSOR" or tipo = "COORDENADOR" or TIPO = "FUNCIONARIO"),
+    senha TEXT NOT NULL
+  )
+`);
 
-exports.up = knex  => knex.schema.createTable('users', table => {
-  table.increments('id');
-  table.string('username').notNullable().unique();
-  table.string('tipo').notNullable();
-  table.string('senha').notNullable();
-});
-
-exports.down = knex => knex.schema.dropTable('users');
+exports.down = knex => knex.schema.raw(`
+  DROP TABLE users
+`);
