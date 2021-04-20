@@ -76,7 +76,7 @@ module.exports = app => {
     .put(serie.atualizar)
     .delete(serie.deletar)
 
-  app.route("/series/:anoLetivo")
+  app.route("/series/:serie")
     .all(authenticate())
     .get(serie.buscaSerie);
 
