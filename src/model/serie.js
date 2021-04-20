@@ -15,21 +15,9 @@ Serie.criar = (novaSerie, resultado) => {
 };
 
 Serie.getAll = async (resultado) => {
-  // const limit = 10;
-  // const page = pages || 1;
-  // const res = knex('series').count('id');
-  // const count = parseInt(res.count);
   knex("series")
-    // .limit(limit)
-    // .offset(page * limit - limit)
     .then((series) => {
-      console.log(series)
       resultado(null, series);
-      // resultado(null, {
-      //   data: series,
-      //   count,
-      //   limit
-      // })
     })
     .catch((err) => resultado(err, null));
 };

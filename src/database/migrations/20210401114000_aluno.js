@@ -2,7 +2,7 @@ exports.up = (knex) =>
   knex.schema.createTable("aluno", (table) => {
     table.string("nome").notNullable();
     table.string("rg").notNullable();
-    table.string("cpf").notNullable().unique();
+    table.string("cpf").primary();
     table.string("email").notNullable();
     table.string("sexo").notNullable();
     table.integer("serie").notNullable();
